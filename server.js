@@ -1,11 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const connect = require("./lib/db.js");
+const axios = require("axios")
 // const authenticateToken = require("../middlewares/authMiddleware");
 
-
 const app = express();
-
 
 app.use(cors());
 app.use(express.json());
@@ -13,12 +12,12 @@ app.use(express.json());
 const fetchDataRoute = require("./routes/fetchDataRoute.js");
 const userRoute = require("./routes/userRoute.js");
 
-
 app.use("/formData", fetchDataRoute);
 app.use("/user", userRoute);
 
-
-
+app.get("/call", async (req, res, next) => {
+  console.log("calling");
+});
 
 const start = async () => {
   try {
@@ -27,14 +26,19 @@ const start = async () => {
     });
   } catch (err) {
     console.log(err);
-    process.exit(1);
   }
 };
 
+setInterval(() => {
+  axios
+    .get("http://localhost:4000/call")
+    .then((response) => {
+      console.log("Response from /call:", response.data);
+    })
+    .catch((error) => {
+      console.error("Error calling /call:", error.message);
+    });
+}, 10000);
 
-  
-  start();
-  connect()
-
-
-
+start();
+connect();
