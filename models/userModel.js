@@ -33,7 +33,11 @@ const userSchema = new mongoose.Schema(
     donate :{
       type : Boolean,
       default : true
-    }
+    },
+    gender :{
+      type : String,
+      required : true
+    },
   },
   {
     timestamps: true,
